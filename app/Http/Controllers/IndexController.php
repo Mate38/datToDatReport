@@ -5,23 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DatToArray;
 
+use File;
+
 class IndexController extends Controller
 {
     public function index()
     { 
-        $filename = 'teste.dat';
+        $files = File::files(storage_path());
+        $data = [];
 
-        try
-        {
-            $contents = file(storage_path($filename));
-            //dd($contents);
+        foreach($files as $file){
+            if($file->getExtension() == 'dat'){
+                $contents = file(storage_path($file->getFilename()));
+                $data_file = DatToArray::dataExtraction($contents);
+                $data += $data_file;
+            }
         }
-        catch (Illuminate\Contracts\Filesystem\FileNotFoundException $exception)
-        {
-            die("The file doesn't exist");
-        }
-
-        $data = DatToArray::dataExtraction($contents);
 
         dd($data);
 
