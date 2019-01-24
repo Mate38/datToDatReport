@@ -1,1 +1,3 @@
-<h1>{ $data }</h1>
+@foreach($files as $file)
+  <p>{{ $file->getFilename() }}</p>
+@endforeach

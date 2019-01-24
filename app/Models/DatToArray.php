@@ -8,11 +8,11 @@ class DatToArray{
       $sales = [];
 
       foreach($contents as $content){
-        $content = str_replace(" ", "", $content);
         $content = str_replace("\r\n", "", $content);
         $content_exploded = explode(",", $content);
         
         if($content_exploded[0] == 003){
+            $content = str_replace(" ", "", $content);
             $data_sale = stristr(stristr($content, '['), ']', true);
             $data_sale = substr($data_sale, 1);
             $data_sale = explode(",", $data_sale);
