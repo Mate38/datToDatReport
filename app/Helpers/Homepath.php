@@ -1,10 +1,6 @@
 <?php
 
-namespace App\Helpers;
-
-class getHomeDir{
-
-  public static function getHomeDir() {
+  function getHomepath() {
     // getenv('HOME') isn't set on Windows and generates a Notice.
     $home = getenv('HOME');
     if (!empty($home)) {
@@ -21,4 +17,3 @@ class getHomeDir{
     return empty($home) ? NULL : $home;
   }
 
-}

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\DatToArray;
-use App\Helpers\Helpers;
 
 use File;
 
@@ -12,7 +11,7 @@ class IndexController extends Controller
 {
     public function index()
     {
-        $homedir = Helpers::getHomeDir();
+        $homedir = getHomepath();
         $files = File::files(realpath($homedir.'/data/in'));
         $data = [];
 
