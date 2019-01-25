@@ -1,3 +1,3 @@
 @foreach($files as $file)
-  <p>{{ $file->getFilename() }}</p>
+  <p>{{ $file }}</p>
 @endforeach

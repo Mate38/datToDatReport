@@ -16,3 +16,5 @@
 // });
 
 Route::get('/', 'IndexController@index');
+
+Route::get('/report', 'ReportController@report');
