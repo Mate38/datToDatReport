@@ -7,6 +7,7 @@ use App\Models\DataExtraction;
 use File;
 use PDF;
 use Storage;
+use DateTime;
 
 class ReportController extends Controller
 {
@@ -33,7 +34,8 @@ class ReportController extends Controller
         $worstSeller = DataExtraction::worstSeller($data);
 
         $output = $customers.','.$salesmans.','.$salesmansAvarageSalary.','.$expensiveSaleId.','.$worstSeller;
-        $filename = 'teste';
+        $now = new DateTime();
+        $filename = $now->format('j-M-Y_H.i.s');
 
         // file_put_contents($dir_out.'/'.$filename.'.done.dat', $output);
         Storage::disk('output')->put($filename.'.done.dat', $output);
