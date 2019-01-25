@@ -15,6 +15,15 @@
 //     return view('welcome');
 // });
 
+/**
+ * Index routes
+ */
 Route::get('/', 'IndexController@index');
+Route::post('/', 'IndexController@upload');
 
+/**
+ * Report routes
+ */
 Route::get('/report', 'ReportController@report');
+
+
