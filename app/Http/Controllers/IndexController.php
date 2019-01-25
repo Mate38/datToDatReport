@@ -19,10 +19,12 @@ class IndexController extends Controller
     {
         $file = $request->file('file');
 
-        // dd($file->getClientOriginalExtension());
-
         if (empty($file)) {
             abort(400, 'Nenhum arquivo foi enviado.');
+        }
+
+        if($file->getClientOriginalExtension() != 'dat'){
+            return back();
         }
 
         $filename = $file->getClientOriginalName();
