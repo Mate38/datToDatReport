@@ -6,14 +6,16 @@ use Illuminate\Http\Request;
 use App\Models\DataExtraction;
 use File;
 use PDF;
+use Storage;
 
 class ReportController extends Controller
 {
     public function report()
     {
         $homedir = getHomepath();
-        $dir = realpath($homedir.'/data/in');
-        $files = File::files($dir);
+        $dir_in = realpath($homedir.'/data/in');
+        $dir_out = realpath($homedir.'/data/out/');
+        $files = File::files($dir_in);
         $data = [];
 
         foreach($files as $file){
@@ -29,6 +31,12 @@ class ReportController extends Controller
         $salesmansAvarageSalary = DataExtraction::salesmansAvarageSalary($data);
         $expensiveSaleId = DataExtraction::expensiveSaleId($data);
         $worstSeller = DataExtraction::worstSeller($data);
+
+        $output = $customers.','.$salesmans.','.$salesmansAvarageSalary.','.$expensiveSaleId.','.$worstSeller;
+        $filename = 'teste';
+
+        // file_put_contents($dir_out.'/'.$filename.'.done.dat', $output);
+        Storage::disk('output')->put($filename.'.done.dat', $output);
 
         $code = view('reports.sales', compact('salesmans','customers','salesmansAvarageSalary','expensiveSaleId','worstSeller'))->render();  
         $pdf = PDF::loadHtml($code);

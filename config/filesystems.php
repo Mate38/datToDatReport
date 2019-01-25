@@ -48,6 +48,16 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'input' => [
+            'driver' => 'local',
+            'root' => realpath(getHomepath().'/data/in'),
+        ],
+
+        'output' => [
+            'driver' => 'local',
+            'root' => realpath(getHomepath().'/data/out'),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
