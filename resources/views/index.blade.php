@@ -13,11 +13,11 @@
 
   <div class="container">
 
-  @if(session()->has('message'))
-    <div class="callout callout-danger">
-      {{ session()->get('message') }}
-    </div>
-  @endif
+    @if(session()->has('message'))
+      <div class="callout callout-danger">
+        {{ session()->get('message') }}
+      </div>
+    @endif
 
     <h2>Arquivos de entrada</h2>
     <p>...</p>            
@@ -43,9 +43,11 @@
         <input type="submit">
     </form>
     <p>
-      Formatos suportado: .dat <br>
+      Formato suportado: .dat <br>
       Tamanho máximo: 10mb
     </p>
+
+    <a class="btn btn-primary" href="report" target="_blank" role="button">Processar e gerar relatório</a>
   </div>
 
 </body>
