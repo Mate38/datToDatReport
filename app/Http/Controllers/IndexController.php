@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DataExtraction;
 use File;
+use Validator;
 
 class IndexController extends Controller
 {
@@ -19,12 +20,12 @@ class IndexController extends Controller
     {
         $file = $request->file('file');
 
-        if (empty($file)) {
-            abort(400, 'Nenhum arquivo foi enviado.');
-        }
-
-        if($file->getClientOriginalExtension() != 'dat'){
-            return back();
+        $v = Validator::make($request->all(), [
+            'file' => 'required|file|max:10000',
+        ]);
+        
+        if($v->fails() || $file->getClientOriginalExtension() != 'dat') {
+            return back()->with('message', 'Problemas para carragar o arquivo, confira as especificações!');
         }
 
         $filename = $file->getClientOriginalName();

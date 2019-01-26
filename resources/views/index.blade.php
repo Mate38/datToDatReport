@@ -12,8 +12,15 @@
 <body>
 
   <div class="container">
+
+  @if(session()->has('message'))
+    <div class="callout callout-danger">
+      {{ session()->get('message') }}
+    </div>
+  @endif
+
     <h2>Arquivos de entrada</h2>
-    <p>adsasda</p>            
+    <p>...</p>            
     <table class="table table-hover">
       <thead class="thead-light">
         <tr>
@@ -24,17 +31,22 @@
           @foreach($files as $file)
             <tr>
               <td>{{ $file }}</td>
-            </tr>
+            </tr> 
           @endforeach
       </tbody>
     </table>
   </div>
-
-  <form action="" method="post" enctype="multipart/form-data">
-      {{ csrf_field() }}
-      <input type="file" name="file" accept=".dat">
-      <input type="submit">
-  </form>
+  <div class="container">
+    <form action="" method="post" enctype="multipart/form-data">
+        {{ csrf_field() }}
+        <input type="file" name="file" accept=".dat">
+        <input type="submit">
+    </form>
+    <p>
+      Formatos suportado: .dat <br>
+      Tamanho máximo: 10mb
+    </p>
+  </div>
 
 </body>
 </html>
