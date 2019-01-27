@@ -51,7 +51,7 @@
           Tamanho máximo: 10mb
         </p>
 
-        <a class="btn btn-primary" href="report" target="_blank" role="button">Processar e gerar relatório</a>
+        <a class="btn btn-primary" href="data" role="button">Processar dados</a>
       </div>
     </div>
 
@@ -70,7 +70,7 @@
               <tr>
                 <td>{{ $file_out }}</td>
                 <td>
-                  <a class="btn-sm btn-info" href="#" role="button">Gerar</a>
+                  <a class="btn-sm btn-info" href="report/{{$file_out}}" target="_blank" role="button">Gerar</a>
                 </td>
               </tr> 
             @endforeach

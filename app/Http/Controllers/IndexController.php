@@ -12,9 +12,9 @@ class IndexController extends Controller
 {
     public function index()
     {
-        $datfiles = $this->getFiles();
+        $datfiles = DataExtraction::getFiles();
 
-        return view('index',['files_in'=> $datfiles[0], 'files_out' => $datfiles[1]]);
+        return view('index',['files_in'=> $datfiles[0], 'files_out' => array_reverse($datfiles[1])]);
     }
 
     public function upload(Request $request)
@@ -33,42 +33,16 @@ class IndexController extends Controller
 
         $file->storeAs('', $filename, 'input');
 
-        $datfiles = $this->getFiles();
+        $datfiles = DataExtraction::getFiles();
 
         return view('index')->with('files', $datfiles);
-    }
-
-    private function getFiles(){
-        $homedir = getHomepath();
-        $dir_in = realpath($homedir.'/data/in');
-        $dir_out = realpath($homedir.'/data/out');
-        $files_in = File::files($dir_in);
-        $files_out = File::files($dir_out);
-        $datfiles_in = [];
-        $datfiles_out = [];
-
-        foreach($files_in as $file_in){
-            if($file_in->getExtension() == 'dat'){
-                $filename = $file_in->getFilename();
-                array_push($datfiles_in, $filename);
-            }
-        }
-
-        foreach($files_out as $file_out){
-            if($file_out->getExtension() == 'dat'){
-                $filename = $file_out->getFilename();
-                array_push($datfiles_out, $filename);
-            }
-        }
-
-        return [$datfiles_in, $datfiles_out];
     }
 
     public function delete($file)
     {
         Storage::disk('input')->delete($file);
-        
-        $datfiles = $this->getFiles();
+
+        $datfiles = DataExtraction::getFiles();
 
         return view('index',['files_in'=> $datfiles[0], 'files_out' => $datfiles[1]]);
     }

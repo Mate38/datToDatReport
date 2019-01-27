@@ -11,11 +11,9 @@ use DateTime;
 
 class ReportController extends Controller
 {
-    public function report()
+    public function dataProcess()
     {
-        $homedir = getHomepath();
-        $dir_in = realpath($homedir.'/data/in');
-        $dir_out = realpath($homedir.'/data/out/');
+        $dir_in = Storage::disk('input')->getAdapter()->getPathPrefix();
         $files = File::files($dir_in);
         $data = [];
 
@@ -27,8 +25,8 @@ class ReportController extends Controller
             }
         }
 
-        $salesmans = DataExtraction::salesmans($data);
         $customers = DataExtraction::customers($data);
+        $salesmans = DataExtraction::salesmans($data);
         $salesmansAvarageSalary = DataExtraction::salesmansAvarageSalary($data);
         $expensiveSaleId = DataExtraction::expensiveSaleId($data);
         $worstSeller = DataExtraction::worstSeller($data);
@@ -37,8 +35,23 @@ class ReportController extends Controller
         $now = new DateTime();
         $filename = $now->format('j-M-Y_H.i.s');
 
-        // file_put_contents($dir_out.'/'.$filename.'.done.dat', $output);
         Storage::disk('output')->put($filename.'.done.dat', $output);
+
+        $datfiles = DataExtraction::getFiles();
+
+        return view('index',['files_in'=> $datfiles[0], 'files_out' => array_reverse($datfiles[1])]);
+    }
+
+    public function report($file)
+    {
+        $data_file = Storage::disk('output')->get($file);
+        $data = explode(",", $data_file);
+
+        $customers = $data[0];
+        $salesmans = $data[1];
+        $salesmansAvarageSalary = $data[2];
+        $expensiveSaleId = $data[3];
+        $worstSeller = $data[4];
 
         $code = view('reports.sales', compact('salesmans','customers','salesmansAvarageSalary','expensiveSaleId','worstSeller'))->render();  
         $pdf = PDF::loadHtml($code);

@@ -25,6 +25,7 @@ Route::get('/delete/{file}', 'IndexController@delete');
 /**
  * Report routes
  */
-Route::get('/report', 'ReportController@report');
+Route::get('/data', 'ReportController@dataProcess');
+Route::get('/report/{file}', 'ReportController@report');
 
 
