@@ -11,44 +11,73 @@
 </head>
 <body>
 
-  <div class="container">
+  @if(session()->has('message'))
+    <div class="callout callout-danger">
+      {{ session()->get('message') }}
+    </div>
+  @endif
 
-    @if(session()->has('message'))
-      <div class="callout callout-danger">
-        {{ session()->get('message') }}
+  <div class="row">
+
+    <div class="container col-md-4">
+      <h3>Arquivos de entrada</h3>
+      <p>...</p>            
+      <table class="table table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>Nome do arquivo</th>
+            <th>Excluir arquivo</th>
+          </tr>
+        </thead>
+        <tbody>
+            @foreach($files_in as $file_in)
+              <tr>
+                <td>{{ $file_in }}</td>
+                <td>
+                  <a class="btn-sm btn-danger" href="#" role="button">Excluir</a>
+                </td>
+              </tr> 
+            @endforeach
+        </tbody>
+      </table>
+      <div>
+        <form action="" method="post" enctype="multipart/form-data">
+            {{ csrf_field() }}
+            <input type="file" name="file" accept=".dat">
+            <input type="submit">
+        </form>
+        <p>
+          Formato suportado: .dat <br>
+          Tamanho máximo: 10mb
+        </p>
+
+        <a class="btn btn-primary" href="report" target="_blank" role="button">Processar e gerar relatório</a>
       </div>
-    @endif
+    </div>
 
-    <h2>Arquivos de entrada</h2>
-    <p>...</p>            
-    <table class="table table-hover">
-      <thead class="thead-light">
-        <tr>
-          <th>Nome do arquivo</th>
-        </tr>
-      </thead>
-      <tbody>
-          @foreach($files as $file)
-            <tr>
-              <td>{{ $file }}</td>
-            </tr> 
-          @endforeach
-      </tbody>
-    </table>
+    <div class="container col-md-4">
+      <h3>Dados processados</h3>
+      <p>...</p>            
+      <table class="table table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>Nome do arquivo</th>
+            <th>Relatório</th>
+          </tr>
+        </thead>
+        <tbody>
+            @foreach($files_out as $file_out)
+              <tr>
+                <td>{{ $file_out }}</td>
+                <td>
+                  <a class="btn-sm btn-info" href="#" role="button">Gerar</a>
+                </td>
+              </tr> 
+            @endforeach
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="container">
-    <form action="" method="post" enctype="multipart/form-data">
-        {{ csrf_field() }}
-        <input type="file" name="file" accept=".dat">
-        <input type="submit">
-    </form>
-    <p>
-      Formato suportado: .dat <br>
-      Tamanho máximo: 10mb
-    </p>
-
-    <a class="btn btn-primary" href="report" target="_blank" role="button">Processar e gerar relatório</a>
-  </div>
-
+  
 </body>
 </html>

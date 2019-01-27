@@ -13,7 +13,7 @@ class IndexController extends Controller
     {
         $datfiles = $this->getFiles();
 
-        return view('index')->with('files', $datfiles);
+        return view('index',['files_in'=> $datfiles[0], 'files_out' => $datfiles[1]]);
     }
 
     public function upload(Request $request)
@@ -39,17 +39,27 @@ class IndexController extends Controller
 
     private function getFiles(){
         $homedir = getHomepath();
-        $dir = realpath($homedir.'/data/in');
-        $files = File::files($dir);
-        $datfiles = [];
+        $dir_in = realpath($homedir.'/data/in');
+        $dir_out = realpath($homedir.'/data/out');
+        $files_in = File::files($dir_in);
+        $files_out = File::files($dir_out);
+        $datfiles_in = [];
+        $datfiles_out = [];
 
-        foreach($files as $file){
-            if($file->getExtension() == 'dat'){
-                $filename = $file->getFilename();
-                array_push($datfiles, $filename);
+        foreach($files_in as $file_in){
+            if($file_in->getExtension() == 'dat'){
+                $filename = $file_in->getFilename();
+                array_push($datfiles_in, $filename);
             }
         }
 
-        return $datfiles;
+        foreach($files_out as $file_out){
+            if($file_out->getExtension() == 'dat'){
+                $filename = $file_out->getFilename();
+                array_push($datfiles_out, $filename);
+            }
+        }
+
+        return [$datfiles_in, $datfiles_out];
     }
 }
