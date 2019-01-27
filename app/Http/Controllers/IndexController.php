@@ -7,6 +7,7 @@ use App\Models\DataExtraction;
 use File;
 use Validator;
 use Storage;
+use Redirect;
 
 class IndexController extends Controller
 {
@@ -40,9 +41,7 @@ class IndexController extends Controller
             $file->storeAs('', $filename, 'input');
         }
 
-        $datfiles = DataExtraction::getFiles();
-
-        return view('index',['files_in'=> $datfiles[0], 'files_out' => array_reverse($datfiles[1])]);
+        return Redirect::to('/');
     }
 
     public function delete($file)
@@ -51,6 +50,6 @@ class IndexController extends Controller
 
         $datfiles = DataExtraction::getFiles();
 
-        return view('index',['files_in'=> $datfiles[0], 'files_out' => $datfiles[1]]);
+        return Redirect::to('/');
     }
 }

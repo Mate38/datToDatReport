@@ -8,6 +8,7 @@ use File;
 use PDF;
 use Storage;
 use DateTime;
+use Redirect;
 
 class ReportController extends Controller
 {
@@ -37,9 +38,7 @@ class ReportController extends Controller
 
         Storage::disk('output')->put($filename.'.done.dat', $output);
 
-        $datfiles = DataExtraction::getFiles();
-
-        return view('index',['files_in'=> $datfiles[0], 'files_out' => array_reverse($datfiles[1])]);
+        return Redirect::to('/');
     }
 
     public function report($file)
