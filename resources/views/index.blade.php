@@ -52,6 +52,7 @@
         </p>
 
         <a class="btn btn-primary" href="data" role="button">Processar dados</a>
+        <a class="btn btn-danger" href="clean" role="button">Esvaziar pasta</a>
       </div>
     </div>
 

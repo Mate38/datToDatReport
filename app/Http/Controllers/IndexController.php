@@ -32,7 +32,7 @@ class IndexController extends Controller
 
         foreach($files as $file){
             
-            if($v->fails() || $file->getClientOriginalExtension() != 'dat') {
+            if($file->getClientOriginalExtension() != 'dat') {
                 return back()->with('message', 'Problemas para carragar o arquivo, confira as especificações!');
             }
 
@@ -48,7 +48,16 @@ class IndexController extends Controller
     {
         Storage::disk('input')->delete($file);
 
-        $datfiles = DataExtraction::getFiles();
+        return Redirect::to('/');
+    }
+
+    public function cleanPath()
+    {
+        $files = Storage::disk('input')->files();
+
+        foreach($files as $file){
+            Storage::disk('input')->delete($file);
+        }
 
         return Redirect::to('/');
     }
