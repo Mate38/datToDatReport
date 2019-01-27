@@ -19,19 +19,26 @@ class IndexController extends Controller
 
     public function upload(Request $request)
     {
-        $file = $request->file('file');
-
         $v = Validator::make($request->all(), [
-            'file' => 'required|file|max:10000',
+                'files.*' => 'required|max:20000'
         ]);
-        
-        if($v->fails() || $file->getClientOriginalExtension() != 'dat') {
+
+        if($v->fails()) {
             return back()->with('message', 'Problemas para carragar o arquivo, confira as especificações!');
         }
 
-        $filename = $file->getClientOriginalName();
+        $files = $request->file('files');
 
-        $file->storeAs('', $filename, 'input');
+        foreach($files as $file){
+            
+            if($v->fails() || $file->getClientOriginalExtension() != 'dat') {
+                return back()->with('message', 'Problemas para carragar o arquivo, confira as especificações!');
+            }
+
+            $filename = $file->getClientOriginalName();
+
+            $file->storeAs('', $filename, 'input');
+        }
 
         $datfiles = DataExtraction::getFiles();
 
