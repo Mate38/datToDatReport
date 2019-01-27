@@ -7,6 +7,7 @@ use App\Models\DataExtraction;
 use File;
 use Validator;
 use Storage;
+use Redirect;
 
 class IndexController extends Controller
 {
@@ -19,31 +20,45 @@ class IndexController extends Controller
 
     public function upload(Request $request)
     {
-        $file = $request->file('file');
-
         $v = Validator::make($request->all(), [
-            'file' => 'required|file|max:10000',
+                'files.*' => 'required|max:20000'
         ]);
-        
-        if($v->fails() || $file->getClientOriginalExtension() != 'dat') {
+
+        if($v->fails()) {
             return back()->with('message', 'Problemas para carragar o arquivo, confira as especificações!');
         }
 
-        $filename = $file->getClientOriginalName();
+        $files = $request->file('files');
 
-        $file->storeAs('', $filename, 'input');
+        foreach($files as $file){
+            
+            if($file->getClientOriginalExtension() != 'dat') {
+                return back()->with('message', 'Problemas para carragar o arquivo, confira as especificações!');
+            }
 
-        $datfiles = DataExtraction::getFiles();
+            $filename = $file->getClientOriginalName();
 
-        return view('index',['files_in'=> $datfiles[0], 'files_out' => array_reverse($datfiles[1])]);
+            $file->storeAs('', $filename, 'input');
+        }
+
+        return Redirect::to('/');
     }
 
     public function delete($file)
     {
         Storage::disk('input')->delete($file);
 
-        $datfiles = DataExtraction::getFiles();
+        return Redirect::to('/');
+    }
 
-        return view('index',['files_in'=> $datfiles[0], 'files_out' => $datfiles[1]]);
+    public function cleanPath()
+    {
+        $files = Storage::disk('input')->files();
+
+        foreach($files as $file){
+            Storage::disk('input')->delete($file);
+        }
+
+        return Redirect::to('/');
     }
 }

@@ -43,15 +43,16 @@
       <div>
         <form action="" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
-            <input type="file" name="file" accept=".dat">
+            <input type="file" name="files[]" accept=".dat" multiple>
             <input type="submit">
         </form>
         <p>
           Formato suportado: .dat <br>
-          Tamanho máximo: 10mb
+          Tamanho máximo: 20mb
         </p>
 
         <a class="btn btn-primary" href="data" role="button">Processar dados</a>
+        <a class="btn btn-danger" href="clean" role="button">Esvaziar pasta</a>
       </div>
     </div>
 
