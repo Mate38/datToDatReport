@@ -35,7 +35,7 @@ class IndexController extends Controller
 
         $datfiles = DataExtraction::getFiles();
 
-        return view('index')->with('files', $datfiles);
+        return view('index',['files_in'=> $datfiles[0], 'files_out' => array_reverse($datfiles[1])]);
     }
 
     public function delete($file)
