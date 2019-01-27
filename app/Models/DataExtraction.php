@@ -2,7 +2,36 @@
 
 namespace App\Models;
 
+use Storage;
+use File;
+
 class DataExtraction{
+
+  public static function getFiles(){
+    $homedir = getHomepath();
+    $dir_in = Storage::disk('input')->getAdapter()->getPathPrefix();
+    $dir_out = Storage::disk('output')->getAdapter()->getPathPrefix();
+    $files_in = File::files($dir_in);
+    $files_out = File::files($dir_out);
+    $datfiles_in = [];
+    $datfiles_out = [];
+
+    foreach($files_in as $file_in){
+        if($file_in->getExtension() == 'dat'){
+            $filename = $file_in->getFilename();
+            array_push($datfiles_in, $filename);
+        }
+    }
+
+    foreach($files_out as $file_out){
+        if($file_out->getExtension() == 'dat'){
+            $filename = $file_out->getFilename();
+            array_push($datfiles_out, $filename);
+        }
+    }
+
+    return [$datfiles_in, $datfiles_out];
+  }
 
   public static function datToArray($contents){
 
@@ -30,18 +59,6 @@ class DataExtraction{
     return $sales;
   }
 
-  public static function salesmans($contents){
-    $salesmans = 0;
-    foreach($contents as $files){
-      foreach($files as $file){
-        if($file[0] == 001){
-          $salesmans++;
-        }
-      }
-    }
-    return $salesmans;
-  }
-
   public static function customers($contents){
     $customers = 0;
     foreach($contents as $files){
@@ -52,6 +69,18 @@ class DataExtraction{
       }
     }
     return $customers;
+  }
+
+  public static function salesmans($contents){
+    $salesmans = 0;
+    foreach($contents as $files){
+      foreach($files as $file){
+        if($file[0] == 001){
+          $salesmans++;
+        }
+      }
+    }
+    return $salesmans;
   }
 
   public static function salesmansAvarageSalary($contents){

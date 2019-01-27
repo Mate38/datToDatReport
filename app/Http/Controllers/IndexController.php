@@ -6,14 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\DataExtraction;
 use File;
 use Validator;
+use Storage;
 
 class IndexController extends Controller
 {
     public function index()
     {
-        $datfiles = $this->getFiles();
+        $datfiles = DataExtraction::getFiles();
 
-        return view('index')->with('files', $datfiles);
+        return view('index',['files_in'=> $datfiles[0], 'files_out' => array_reverse($datfiles[1])]);
     }
 
     public function upload(Request $request)
@@ -32,24 +33,17 @@ class IndexController extends Controller
 
         $file->storeAs('', $filename, 'input');
 
-        $datfiles = $this->getFiles();
+        $datfiles = DataExtraction::getFiles();
 
         return view('index')->with('files', $datfiles);
     }
 
-    private function getFiles(){
-        $homedir = getHomepath();
-        $dir = realpath($homedir.'/data/in');
-        $files = File::files($dir);
-        $datfiles = [];
+    public function delete($file)
+    {
+        Storage::disk('input')->delete($file);
 
-        foreach($files as $file){
-            if($file->getExtension() == 'dat'){
-                $filename = $file->getFilename();
-                array_push($datfiles, $filename);
-            }
-        }
+        $datfiles = DataExtraction::getFiles();
 
-        return $datfiles;
+        return view('index',['files_in'=> $datfiles[0], 'files_out' => $datfiles[1]]);
     }
 }
