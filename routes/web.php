@@ -20,6 +20,7 @@
  */
 Route::get('/', 'IndexController@index');
 Route::post('/', 'IndexController@upload');
+Route::get('/delete/{file}', 'IndexController@delete');
 
 /**
  * Report routes

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\DataExtraction;
 use File;
 use Validator;
+use Storage;
 
 class IndexController extends Controller
 {
@@ -61,5 +62,14 @@ class IndexController extends Controller
         }
 
         return [$datfiles_in, $datfiles_out];
+    }
+
+    public function delete($file)
+    {
+        Storage::disk('input')->delete($file);
+        
+        $datfiles = $this->getFiles();
+
+        return view('index',['files_in'=> $datfiles[0], 'files_out' => $datfiles[1]]);
     }
 }

@@ -34,7 +34,7 @@
               <tr>
                 <td>{{ $file_in }}</td>
                 <td>
-                  <a class="btn-sm btn-danger" href="#" role="button">Excluir</a>
+                  <a class="btn-sm btn-danger" href="delete/{{$file_in}}" role="button">Excluir</a>
                 </td>
               </tr> 
             @endforeach
